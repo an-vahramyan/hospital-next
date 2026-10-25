@@ -1,0 +1,222 @@
+// ============================================================
+// Схема базы данных (Prisma)
+// ============================================================
+// После изменений:   npm run db:migrate   (prisma migrate dev)
+// Просмотр данных:   npm run db:studio
+//
+// SQLite не поддерживает enum, поэтому role/status — String,
+// допустимые значения указаны в комментариях и проверяются zod-ом в API.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite" // для PostgreSQL: "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  role         String   @default("PATIENT") // PATIENT | DOCTOR | ADMIN
+  firstName    String
+  lastName     String
+  phone        String?
+  language     String   @default("hy")
+  createdAt    DateTime @default(now())
+
+  patient Patient?
+  doctor  Doctor?
+}
+
+model Patient {
+  id        Int       @id @default(autoincrement())
+  userId    Int       @unique
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  birthDate DateTime?
+  gender    String? // MALE | FEMALE | OTHER
+  bloodType String?
+  allergies String?
+
+  appointments     Appointment[]
+  visits           Visit[]
+  prescriptions    Prescription[]
+  examinations     Examination[]
+  queueTickets     QueueTicket[]
+  notifications    Notification[]
+}
+
+model Department {
+  id          Int     @id @default(autoincrement())
+  name        String
+  slug        String  @unique
+  description String?
+
+  doctors      Doctor[]
+  services     Service[]
+  queueTickets QueueTicket[]
+}
+
+model Doctor {
+  id              Int        @id @default(autoincrement())
+  userId          Int        @unique
+  user            User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  departmentId    Int
+  department      Department @relation(fields: [departmentId], references: [id])
+  specialty       String
+  bio             String?
+  photoUrl        String?
+  experienceYears Int        @default(0)
+  workStart       String     @default("09:00")
+  workEnd         String     @default("17:00")
+  slotMinutes     Int        @default(30)
+
+  appointments  Appointment[]
+  visits        Visit[]
+  prescriptions Prescription[]
+}
+
+model Service {
+  id           Int        @id @default(autoincrement())
+  name         String
+  description  String?
+  price        Int // драм (֏)
+  durationMin  Int        @default(30)
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
+
+  appointments Appointment[]
+}
+
+model Equipment {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  imageUrl    String?
+  acquiredAt  DateTime?
+  isNew       Boolean   @default(false)
+  status      String    @default("ACTIVE") // ACTIVE | MAINTENANCE | RETIRED
+}
+
+model Appointment {
+  id           Int      @id @default(autoincrement())
+  patientId    Int
+  patient      Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId     Int
+  doctor       Doctor   @relation(fields: [doctorId], references: [id])
+  serviceId    Int?
+  service      Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  startsAt     DateTime
+  endsAt       DateTime
+  status       String   @default("BOOKED") // BOOKED | CANCELLED | COMPLETED | NO_SHOW
+  notes        String?
+  reminderSent Boolean  @default(false)
+  createdAt    DateTime @default(now())
+
+  @@index([doctorId, startsAt])
+}
+
+model Visit {
+  id        Int      @id @default(autoincrement())
+  patientId Int
+  patient   Patient  @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId  Int
+  doctor    Doctor   @relation(fields: [doctorId], references: [id])
+  date      DateTime @default(now())
+  diagnosis String?
+  notes     String?
+}
+
+model Prescription {
+  id         Int                @id @default(autoincrement())
+  code       String             @unique // "RX-2026-0001" — по нему аптека узнаёт рецепт
+  patientId  Int
+  patient    Patient            @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  doctorId   Int
+  doctor     Doctor             @relation(fields: [doctorId], references: [id])
+  issuedAt   DateTime           @default(now())
+  validUntil DateTime
+  status     String             @default("ACTIVE") // ACTIVE | USED | EXPIRED
+  items      PrescriptionItem[]
+
+  pharmacyRequests PharmacyRequest[]
+}
+
+model PrescriptionItem {
+  id             Int          @id @default(autoincrement())
+  prescriptionId Int
+  prescription   Prescription @relation(fields: [prescriptionId], references: [id], onDelete: Cascade)
+  medicineName   String
+  genericName    String?
+  dosage         String
+  frequency      String?
+  durationDays   Int?
+  quantity       Int
+}
+
+model Examination {
+  id        Int       @id @default(autoincrement())
+  patientId Int
+  patient   Patient   @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  type      String
+  status    String    @default("ORDERED") // ORDERED | DONE
+  orderedAt DateTime  @default(now())
+  resultAt  DateTime?
+  result    String?
+  fileUrl   String?
+}
+
+model Article {
+  id          Int      @id @default(autoincrement())
+  slug        String   @unique
+  title       String
+  content     String
+  language    String   @default("hy") // hy | en | ru
+  coverUrl    String?
+  isPublished Boolean  @default(false)
+  publishedAt DateTime @default(now())
+}
+
+model QueueTicket {
+  id           Int        @id @default(autoincrement())
+  number       Int
+  date         String // "YYYY-MM-DD"
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  patientId    Int?
+  patient      Patient?   @relation(fields: [patientId], references: [id], onDelete: SetNull)
+  status       String     @default("WAITING") // WAITING | CALLED | DONE | SKIPPED
+  createdAt    DateTime   @default(now())
+  calledAt     DateTime?
+
+  @@unique([departmentId, date, number])
+}
+
+// Лог запросов, отправленных в аптеку
+model PharmacyRequest {
+  id             Int           @id @default(autoincrement())
+  requestId      String        @unique
+  kind           String        @default("CHECK") // CHECK | RESERVE
+  prescriptionId Int?
+  prescription   Prescription? @relation(fields: [prescriptionId], references: [id], onDelete: SetNull)
+  requestedById  Int
+  payload        String // JSON
+  response       String? // JSON
+  status         String        @default("PENDING") // PENDING | SUCCESS | FAILED
+  createdAt      DateTime      @default(now())
+}
+
+// Уведомления, пришедшие из аптеки
+model Notification {
+  id               Int      @id @default(autoincrement())
+  type             String // RESERVATION_READY | OUT_OF_STOCK | RESERVATION_EXPIRED | INFO
+  message          String
+  reservationId    String?
+  prescriptionCode String?
+  patientId        Int?
+  patient          Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  isRead           Boolean  @default(false)
+  createdAt        DateTime @default(now())
+}
