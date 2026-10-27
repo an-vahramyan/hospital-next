@@ -1,4 +1,4 @@
-// Обёртка для route handlers: единый формат ответов и ошибок
+// Wrapper for route handlers: a uniform response and error format
 import { NextResponse, type NextRequest } from "next/server";
 import { Prisma } from "@prisma/client";
 import { ZodError, type ZodTypeAny, type z } from "zod";
@@ -35,7 +35,7 @@ export function errorResponse(err: unknown) {
     if (err.code === "P2003") return NextResponse.json({ error: "Record is used by other records", code: "IN_USE" }, { status: 409 });
   }
   console.error(err);
-  // детали 500-й ошибки клиенту не показываем
+  // do not show the client the details of a 500 error
   return NextResponse.json({ error: "Internal server error" }, { status: 500 });
 }
 

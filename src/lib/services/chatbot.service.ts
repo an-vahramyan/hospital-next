@@ -1,4 +1,4 @@
-// AI-чатбот (Claude API) + fallback по ключевым словам
+// AI chatbot (Claude API) + keyword fallback
 import Anthropic from "@anthropic-ai/sdk";
 import { prisma } from "../db";
 import { config } from "../config";
@@ -50,17 +50,17 @@ const EMERGENCY = ["կրծքավանդակ", "շնչահեղձ", "գիտակց",
 
 const FALLBACK_TEXT: Record<string, { emergency: string; found: (d: string) => string; none: string }> = {
   hy: {
-    emergency: "⚠️ Սա կարող է շտապ վիճակ լինել։ Անմիջապես զանգահարեք 911 կամ 103։",
+    emergency: "Սա կարող է շտապ վիճակ լինել։ Անմիջապես զանգահարեք 911 կամ 103։",
     found: (d) => `Ձեր նկարագրությամբ կարող է օգնել «${d}» բաժինը։ Կարող եք տեսնել բաժնի բժիշկներին և ամրագրել այց կայքում։ Սա բժշկական խորհրդատվություն չէ։`,
     none: "Ես կօգնեմ ընտրել ճիշտ բաժինը։ Նկարագրեք, խնդրում եմ, ինչն է Ձեզ անհանգստացնում (օր․ գլխացավ, սրտի ցավ, երեխայի ջերմություն)։ Ամրագրել կարող եք «Ամրագրել այց» կոճակով։",
   },
   ru: {
-    emergency: "⚠️ Это может быть неотложное состояние. Немедленно звоните 911 или 103.",
+    emergency: "Это может быть неотложное состояние. Немедленно звоните 911 или 103.",
     found: (d) => `По вашему описанию может помочь отделение «${d}». Вы можете посмотреть врачей отделения и записаться на сайте. Это не медицинская консультация.`,
     none: "Я помогу выбрать нужное отделение. Опишите, пожалуйста, что вас беспокоит (например: головная боль, боль в сердце, температура у ребёнка). Записаться можно кнопкой «Записаться».",
   },
   en: {
-    emergency: "⚠️ This may be an emergency. Call 911 or 103 immediately.",
+    emergency: "This may be an emergency. Call 911 or 103 immediately.",
     found: (d) => `Based on your description, the "${d}" department may help. You can see its doctors and book a visit on the website. This is not medical advice.`,
     none: "I can help you choose the right department. Please describe what bothers you (e.g. headache, heart pain, child's fever). You can book with the \"Book a visit\" button.",
   },
@@ -88,7 +88,7 @@ export async function chat(messages: ChatMessage[], language = "hy"): Promise<Ch
 
   if (!client) return keywordFallback(lastUser, language, departments);
 
-  // API требует, чтобы история начиналась с user
+  // the API requires the history to start with a user message
   const history = messages.slice(-10);
   while (history.length && history[0].role !== "user") history.shift();
 

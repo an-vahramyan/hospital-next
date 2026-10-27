@@ -21,7 +21,7 @@ export default async function ArticlesPage({ searchParams }: { searchParams: Pro
       </div>
       <div className="section-sm">
         {data.items.length === 0 ? (
-          <Empty icon="📰" title={t("articles.noArticles")} />
+          <Empty icon="newspaper" title={t("articles.noArticles")} />
         ) : (
           <div className="grid grid-3">
             {data.items.map((a) => (

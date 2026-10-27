@@ -1,12 +1,12 @@
-import DashNav from "@/components/DashNav";
+import DashNav, { type DashLink } from "@/components/DashNav";
 
-const links = [
-  { href: "/patient", label: "patient.dashboard", icon: "🏠", exact: true },
-  { href: "/patient/appointments", label: "patient.appointments", icon: "📅" },
-  { href: "/patient/prescriptions", label: "patient.prescriptions", icon: "📝" },
-  { href: "/patient/examinations", label: "patient.examinations", icon: "🧪" },
-  { href: "/patient/medicines", label: "patient.medicines", icon: "💊" },
-  { href: "/patient/profile", label: "patient.profile", icon: "👤" },
+const links: DashLink[] = [
+  { href: "/patient", label: "patient.dashboard", icon: "home", exact: true },
+  { href: "/patient/appointments", label: "patient.appointments", icon: "calendar" },
+  { href: "/patient/prescriptions", label: "patient.prescriptions", icon: "fileText" },
+  { href: "/patient/examinations", label: "patient.examinations", icon: "flask" },
+  { href: "/patient/medicines", label: "patient.medicines", icon: "pill" },
+  { href: "/patient/profile", label: "patient.profile", icon: "user" },
 ];
 
 export default function PatientLayout({ children }: { children: React.ReactNode }) {

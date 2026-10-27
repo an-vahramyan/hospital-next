@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-/** Загрузка данных: const { data, loading, error, reload } = useFetch(() => api.x(), [deps]) */
+/** Data loading: const { data, loading, error, reload } = useFetch(() => api.x(), [deps]) */
 export function useFetch<T>(fn: () => Promise<T>, deps: unknown[] = []) {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(true);

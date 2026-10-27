@@ -1,4 +1,4 @@
-// JWT (jose) — работает и в Node, и в proxy.ts
+// JWT (jose) — works in both Node and proxy.ts
 import { SignJWT, jwtVerify } from "jose";
 
 export type Role = "PATIENT" | "DOCTOR" | "ADMIN";

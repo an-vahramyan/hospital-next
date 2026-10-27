@@ -1,4 +1,4 @@
-// Конфигурация из .env — читаем process.env только здесь
+// Configuration from .env — process.env is read only here
 
 const isProd = process.env.NODE_ENV === "production";
 

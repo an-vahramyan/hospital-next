@@ -6,6 +6,7 @@ import { useFetch } from "@/lib/client/hooks";
 import { useI18n } from "@/i18n/I18nProvider";
 import { deptName } from "@/i18n/translate";
 import { Empty, ErrorAlert, Spinner } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const STATUSES = ["BOOKED", "COMPLETED", "CANCELLED", "NO_SHOW"];
@@ -41,7 +42,7 @@ export default function ManageAppointments() {
           {STATUSES.map((s) => <option key={s} value={s}>{t(`status.${s}`)}</option>)}
         </select>
         {(filters.date || filters.doctorId || filters.status) && (
-          <button className="btn btn-ghost btn-sm" onClick={() => setFilters({ date: "", doctorId: "", status: "" })}>✕</button>
+          <button className="btn btn-ghost btn-sm" onClick={() => setFilters({ date: "", doctorId: "", status: "" })} aria-label="Reset"><Icon name="x" size={16} /></button>
         )}
       </div>
       <ErrorAlert error={error || list.error} t={t} />

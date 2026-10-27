@@ -1,7 +1,7 @@
 import type { Prisma } from "@prisma/client";
 import { prisma } from "../db";
 
-/** Следующий код вида RX-2026-0001 (внутри транзакции) */
+/** Next code like RX-2026-0001 (inside a transaction) */
 export async function nextPrescriptionCode(tx: Prisma.TransactionClient, year = new Date().getFullYear()) {
   const prefix = `RX-${year}-`;
   const last = await tx.prescription.findFirst({
@@ -43,6 +43,6 @@ export async function createPrescription(data: {
   });
 }
 
-/** Фактический статус: просроченный ACTIVE считаем EXPIRED */
+/** Effective status: an expired ACTIVE one counts as EXPIRED */
 export const effectiveStatus = (p: { status: string; validUntil: Date }) =>
   p.status === "ACTIVE" && p.validUntil.getTime() < Date.now() ? "EXPIRED" : p.status;

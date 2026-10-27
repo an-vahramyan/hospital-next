@@ -37,6 +37,8 @@ const en: Dict = {
     quickTitle: "Quick actions", quickQueue: "Take a queue number", quickMedicines: "Medicine availability", quickAsk: "Ask the AI assistant",
     statsYears: "years of experience", statsDoctors: "doctors", statsPatients: "patients", statsDepartments: "departments",
     whyTitle: "Why choose us",
+    whySub: "Modern diagnostics, experienced specialists and digital services — all in one centre.",
+    heroImageAlt: "Our medical team", aboutImageAlt: "Reception and treatment rooms of the centre", heroBadge: "Licensed medical centre",
     why1t: "Online booking", why1: "Pick a doctor and a free slot with no calls and no waiting.",
     why2t: "New equipment", why2: "3 Tesla MRI, 256-slice CT and premium ultrasound.",
     why3t: "Pharmacy link", why3: "Check whether your prescribed medicines are in stock and reserve them.",

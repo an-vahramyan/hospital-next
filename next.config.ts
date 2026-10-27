@@ -1,9 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // Пакеты, которые должны работать как обычные Node-модули (не бандлиться)
+  // Packages that must run as regular Node modules (not bundled)
   serverExternalPackages: ["@prisma/client", "bcryptjs", "node-cron", "nodemailer"],
-  // Разрешить открывать dev-сервер с других компьютеров локальной сети
+  // Allow opening the dev server from other computers on the local network
   allowedDevOrigins: ["192.168.*.*", "10.*.*.*", "*.local"],
   poweredByHeader: false,
 };

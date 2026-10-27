@@ -1,4 +1,4 @@
-// HTTP-клиент для API аптеки (ИСХОДЯЩИЕ запросы). Контракт: docs/pharmacy-api-contract.md, раздел A
+// HTTP client for the pharmacy API (OUTGOING requests). Contract: docs/pharmacy-api-contract.md, section A
 import { config } from "../config";
 import { HttpError } from "../errors";
 

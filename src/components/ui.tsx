@@ -1,5 +1,6 @@
-// Мелкие общие UI-компоненты (без хуков — работают и в server, и в client компонентах)
+// Small shared UI components (no hooks — work in both server and client components)
 import type { TFunction } from "@/i18n/translate";
+import Icon, { type IconName } from "./Icon";
 
 export function Spinner({ label }: { label?: string }) {
   return (
@@ -10,10 +11,10 @@ export function Spinner({ label }: { label?: string }) {
   );
 }
 
-export function Empty({ icon = "📭", title, hint, children }: { icon?: string; title: string; hint?: string; children?: React.ReactNode }) {
+export function Empty({ icon = "inbox", title, hint, children }: { icon?: IconName; title: string; hint?: string; children?: React.ReactNode }) {
   return (
     <div className="empty">
-      <div className="empty-icon" aria-hidden>{icon}</div>
+      <div className="empty-icon"><Icon name={icon} size={28} /></div>
       <p style={{ color: "var(--text)", fontWeight: 600 }}>{title}</p>
       {hint && <p className="small mt-1">{hint}</p>}
       {children && <div className="mt-2">{children}</div>}

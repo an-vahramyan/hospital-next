@@ -7,7 +7,7 @@ export const dictionaries: Record<Lang, Dict> = { hy, en, ru };
 
 export type TFunction = (key: string, vars?: Record<string, string | number>) => string;
 
-/** t("doctors.experience", { n: 5 }) — ищет ключ в языке, потом в hy, иначе возвращает ключ */
+/** t("doctors.experience", { n: 5 }) — looks up the key in the current language, then in hy, otherwise returns the key */
 export function makeT(lang: Lang): TFunction {
   const lookup = (dict: unknown, key: string) =>
     key.split(".").reduce<unknown>((o, k) => (o && typeof o === "object" ? (o as Record<string, unknown>)[k] : undefined), dict);
@@ -19,7 +19,7 @@ export function makeT(lang: Lang): TFunction {
   };
 }
 
-// Армянские названия — не во всех браузерах/Node есть ICU-данные для hy-AM
+// Armenian names — not every browser/Node has ICU data for hy-AM
 const HY_MONTHS = ["հունվարի", "փետրվարի", "մարտի", "ապրիլի", "մայիսի", "հունիսի", "հուլիսի", "օգոստոսի", "սեպտեմբերի", "հոկտեմբերի", "նոյեմբերի", "դեկտեմբերի"];
 const HY_WEEKDAYS = ["կիրակի", "երկուշաբթի", "երեքշաբթի", "չորեքշաբթի", "հինգշաբթի", "ուրբաթ", "շաբաթ"];
 const pad2 = (n: number) => String(n).padStart(2, "0");
@@ -55,7 +55,7 @@ export function makeFormatters(lang: Lang) {
 
 export type Formatters = ReturnType<typeof makeFormatters>;
 
-/** Название отделения: перевод по slug, иначе название из БД */
+/** Department name: translation by slug, otherwise the name from the DB */
 export const deptName = (t: TFunction, d: { slug: string; name: string }) => {
   const v = t(`dept.${d.slug}`);
   return v === `dept.${d.slug}` ? d.name : v;

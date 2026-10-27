@@ -42,7 +42,7 @@ export const PUT = handler<{ id: string }>(async (req, ctx) => {
   });
 });
 
-// Удаляем пользователя (Doctor удалится каскадом). Если есть приёмы — 409.
+// Delete the user (Doctor is removed by cascade). If there are appointments — 409.
 export const DELETE = handler<{ id: string }>(async (req, ctx) => {
   await requireAuth(req, "ADMIN");
   const doctor = await prisma.doctor.findUnique({

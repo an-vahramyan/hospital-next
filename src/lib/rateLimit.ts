@@ -1,4 +1,4 @@
-// Простейший in-memory rate limit (по IP)
+// Simple in-memory rate limit (by IP)
 import type { NextRequest } from "next/server";
 import { HttpError } from "./errors";
 

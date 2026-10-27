@@ -1,5 +1,5 @@
 // ============================================================
-// Начальные (тестовые) данные.   Запуск: npm run seed
+// test data |   for run: npm run seed
 // ============================================================
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
@@ -14,7 +14,7 @@ const daysFromNow = (d: number, h = 10, m = 0) => {
 };
 
 async function main() {
-  // 1. Очистка — сначала «дети», потом «родители»
+  // 1.children first then parents
   await prisma.notification.deleteMany();
   await prisma.pharmacyRequest.deleteMany();
   await prisma.queueTicket.deleteMany();
@@ -33,12 +33,12 @@ async function main() {
 
   const hash = (p: string) => bcrypt.hash(p, 10);
 
-  // 2. Админ
+  // 2. admin
   await prisma.user.create({
     data: { email: "admin@hospital.am", passwordHash: await hash("Admin123!"), role: "ADMIN", firstName: "Ադմին", lastName: "Համակարգ" },
   });
 
-  // 3. Отделения
+  // 3. 
   const deps = await Promise.all(
     [
       { slug: "cardiology", name: "Սրտաբանություն", description: "Սրտի և անոթների հիվանդություններ, ճնշում, առիթմիա" },
@@ -50,7 +50,7 @@ async function main() {
   );
   const dep = Object.fromEntries(deps.map((d) => [d.slug, d]));
 
-  // 4. Врачи
+  // 4. doctors
   const doctorsData = [
     { email: "doctor@hospital.am", firstName: "Անի", lastName: "Սարգսյան", dep: "cardiology", specialty: "Սրտաբան", exp: 15, bio: "Երևանի պետական բժշկական համալսարանի շրջանավարտ։ Մասնագիտացել է Բեռլինի Charité կլինիկայում։ Զբաղվում է սրտային անբավարարության և առիթմիաների բուժմամբ։" },
     { email: "aram.petrosyan@hospital.am", firstName: "Արամ", lastName: "Պետրոսյան", dep: "cardiology", specialty: "Ինտերվենցիոն սրտաբան", exp: 11, bio: "Կորոնարոգրաֆիա և ստենտավորում։ 2000+ հաջող միջամտություն։" },
@@ -88,7 +88,7 @@ async function main() {
   }
   const [ani, , lilit] = doctors;
 
-  // 5. Услуги
+  // 5.services
   const services = [
     ["cardiology", "Սրտաբանի խորհրդատվություն", "Առաջնային զննում, անամնեզ, խորհուրդներ", 12000, 30],
     ["cardiology", "ԷՍԳ (էլեկտրասրտագրություն)", "Սրտի ռիթմի և աշխատանքի գրանցում", 5000, 15],
@@ -110,7 +110,7 @@ async function main() {
     );
   }
 
-  // 6. Оборудование
+  // 6. tools
   await prisma.equipment.createMany({
     data: [
       { name: "Siemens MAGNETOM Vida 3T ՄՌՏ", description: "Բարձր լուծաչափով մագնիսառեզոնանսային տոմոգրաֆ՝ արագ և հարմարավետ հետազոտության համար", isNew: true, acquiredAt: daysFromNow(-40) },
@@ -122,7 +122,7 @@ async function main() {
     ],
   });
 
-  // 7. Тестовый пациент + история
+  // 7.test pacient + history
   const patientUser = await prisma.user.create({
     data: {
       email: "patient@hospital.am",
@@ -143,7 +143,7 @@ async function main() {
   await prisma.appointment.create({
     data: { patientId: patient.id, doctorId: ani.id, serviceId: createdServices[0].id, startsAt: daysFromNow(-14, 11), endsAt: daysFromNow(-14, 11, 30), status: "COMPLETED" },
   });
-  // ближайший приём — завтра в 10:00 (в рабочее время врача)
+  
   await prisma.appointment.create({
     data: { patientId: patient.id, doctorId: ani.id, serviceId: createdServices[1].id, startsAt: daysFromNow(1, 10), endsAt: daysFromNow(1, 10, 30), notes: "Կրկնակի այց" },
   });
@@ -189,7 +189,7 @@ async function main() {
     data: { type: "INFO", message: "Բարի գալուստ! Դեղատան ծանուցումները կհայտնվեն այստեղ։", patientId: patient.id, prescriptionCode: `RX-${year}-0001` },
   });
 
-  // Очередь на сегодня (для демо)
+  //for demo - nearest appointment
   const pad = (n: number) => String(n).padStart(2, "0");
   const t = new Date();
   const today = `${t.getFullYear()}-${pad(t.getMonth() + 1)}-${pad(t.getDate())}`;
@@ -202,7 +202,7 @@ async function main() {
     ],
   });
 
-  // 8. Статьи (hy, en, ru)
+  // 8. articles (hy, en, ru)
   await prisma.article.createMany({
     data: [
       {

@@ -6,6 +6,7 @@ import { useDebounced, useFetch } from "@/lib/client/hooks";
 import { useI18n } from "@/i18n/I18nProvider";
 import Modal from "@/components/Modal";
 import { Empty, ErrorAlert, Spinner, StatusBadge } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default function ManagePatients() {
@@ -35,7 +36,7 @@ export default function ManagePatients() {
       <h1>{t("admin.patients")}</h1>
       <input className="input" style={{ maxWidth: 420 }} type="search" placeholder={t("admin.searchPatients")} value={q} onChange={(e) => setQ(e.target.value)} />
       <ErrorAlert error={list.error} t={t} />
-      {list.loading && !list.data ? <Spinner /> : !list.data?.length ? <Empty icon="🔍" title={t("common.empty")} /> : (
+      {list.loading && !list.data ? <Spinner /> : !list.data?.length ? <Empty icon="search" title={t("common.empty")} /> : (
         <div className="table-wrap">
           <table className="table">
             <thead><tr><th>{t("common.patient")}</th><th>{t("common.phone")}</th><th>{t("admin.registered")}</th><th>{t("admin.counts")}</th><th /></tr></thead>
@@ -66,7 +67,7 @@ export default function ManagePatients() {
                 <dt>{t("patient.allergies")}</dt><dd>{p.allergies ?? "—"}</dd>
               </dl>
 
-              <h3>📅 {t("patient.appointments")}</h3>
+              <h3 className="with-icon"><Icon name="calendar" size={20} /> {t("patient.appointments")}</h3>
               {p.appointments.length === 0 ? <p className="small">{t("common.empty")}</p> : (
                 <div className="list">
                   {p.appointments.map((a: any) => (
@@ -78,7 +79,7 @@ export default function ManagePatients() {
                 </div>
               )}
 
-              <h3>🗂️ {t("admin.visits")}</h3>
+              <h3 className="with-icon"><Icon name="folder" size={20} /> {t("admin.visits")}</h3>
               {p.visits.length === 0 ? <p className="small">{t("common.empty")}</p> : p.visits.map((v: any) => (
                 <div key={v.id} className="card-flat small">
                   <b>{f.date(v.date)}</b> · {v.doctor.user.firstName} {v.doctor.user.lastName}
@@ -87,7 +88,7 @@ export default function ManagePatients() {
                 </div>
               ))}
 
-              <h3>📝 {t("patient.prescriptions")}</h3>
+              <h3 className="with-icon"><Icon name="fileText" size={20} /> {t("patient.prescriptions")}</h3>
               {p.prescriptions.length === 0 ? <p className="small">{t("common.empty")}</p> : p.prescriptions.map((rx: any) => (
                 <div key={rx.id} className="card-flat small">
                   <div className="row"><b style={{ fontFamily: "monospace" }}>{rx.code}</b><StatusBadge status={rx.status} t={t} /><span className="muted">{f.dateShort(rx.issuedAt)} → {f.dateShort(rx.validUntil)}</span></div>
@@ -95,7 +96,7 @@ export default function ManagePatients() {
                 </div>
               ))}
 
-              <h3>🧪 {t("patient.examinations")}</h3>
+              <h3 className="with-icon"><Icon name="flask" size={20} /> {t("patient.examinations")}</h3>
               {p.examinations.length === 0 ? <p className="small">{t("common.empty")}</p> : p.examinations.map((e: any) => (
                 <div key={e.id} className="card-flat small row-between">
                   <div><div className="row"><b>{e.type}</b><StatusBadge status={e.status} t={t} /></div>{e.result && <div className="mt-1">{e.result}</div>}</div>

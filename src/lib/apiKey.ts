@@ -1,4 +1,4 @@
-// Проверка X-API-Key для запросов аптеки (сервис-сервис)
+// X-API-Key check for pharmacy requests (service-to-service)
 import crypto from "node:crypto";
 import type { NextRequest } from "next/server";
 import { HttpError } from "./errors";

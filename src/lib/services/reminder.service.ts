@@ -1,4 +1,4 @@
-// Напоминания о приёме (email через SMTP или console.log в dev)
+// Appointment reminders (email via SMTP or console.log in dev)
 import nodemailer from "nodemailer";
 import { config } from "../config";
 

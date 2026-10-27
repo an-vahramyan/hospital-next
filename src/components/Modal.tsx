@@ -1,5 +1,6 @@
 "use client";
 import { useEffect } from "react";
+import Icon from "./Icon";
 
 export default function Modal({
   title, onClose, children, footer, size = "",
@@ -20,7 +21,7 @@ export default function Modal({
       <div className={`modal ${size ? `modal-${size}` : ""}`} role="dialog" aria-modal="true" aria-label={title}>
         <div className="modal-head">
           <h3>{title}</h3>
-          <button className="icon-btn" onClick={onClose} aria-label="Close">✕</button>
+          <button className="icon-btn" onClick={onClose} aria-label="Close"><Icon name="x" size={18} /></button>
         </div>
         <div className="modal-body">{children}</div>
         {footer && <div className="modal-foot">{footer}</div>}

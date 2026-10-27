@@ -2,6 +2,7 @@
 
 import { useI18n } from "@/i18n/I18nProvider";
 import ResourceTable from "@/components/admin/ResourceTable";
+import Icon from "@/components/Icon";
 
 export default function ManageArticles() {
   const { t, f } = useI18n();
@@ -14,7 +15,7 @@ export default function ManageArticles() {
         columns={[
           { key: "title", label: t("admin.titleField"), render: (r) => <><strong>{r.title}</strong><div className="xs muted">/{r.slug}</div></> },
           { key: "language", label: t("admin.language"), render: (r) => <span className="badge">{r.language.toUpperCase()}</span> },
-          { key: "isPublished", label: t("admin.isPublished"), render: (r) => (r.isPublished ? <span className="badge badge-success">✓</span> : <span className="badge">—</span>) },
+          { key: "isPublished", label: t("admin.isPublished"), render: (r) => (r.isPublished ? <span className="badge badge-success"><Icon name="check" size={14} /></span> : <span className="badge">—</span>) },
           { key: "publishedAt", label: t("admin.publishedAt"), render: (r) => f.dateShort(r.publishedAt) },
         ]}
         fields={[

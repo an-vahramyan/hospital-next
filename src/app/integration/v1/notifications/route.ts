@@ -3,7 +3,7 @@ import { requireApiKey } from "@/lib/apiKey";
 import { prisma } from "@/lib/db";
 import { notificationSchema } from "@/lib/schemas";
 
-// Уведомление от аптеки (лекарства готовы, закончились и т.д.)
+// Notification from the pharmacy (medicines ready, out of stock, etc.)
 export const POST = handler(async (req) => {
   requireApiKey(req);
   const data = await parseBody(req, notificationSchema);

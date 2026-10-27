@@ -1,4 +1,4 @@
-// Cron: напоминания за 24 часа до приёма (каждые 15 минут)
+// Cron: reminders 24 hours before the appointment (every 15 minutes)
 import cron from "node-cron";
 import { prisma } from "../db";
 import { sendAppointmentReminder } from "../services/reminder.service";
@@ -31,5 +31,5 @@ export function startReminderJob() {
   cron.schedule("*/15 * * * *", () => {
     runReminderPass().catch((e) => console.error("[reminder] pass failed:", e));
   });
-  console.log("⏰ Reminder job scheduled (every 15 min)");
+  console.log("Reminder job scheduled (every 15 min)");
 }

@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { getDoctorByUserId } from "@/lib/services/appointment.service";
 
-// Пациенты врача (были записаны к нему) — с рецептами и обследованиями
+// Doctor's patients (those who booked with them) — with prescriptions and examinations
 export const GET = handler(async (req) => {
   const doctor = await getDoctorByUserId((await requireAuth(req, "DOCTOR")).id);
   return prisma.patient.findMany({

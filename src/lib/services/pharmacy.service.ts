@@ -1,4 +1,4 @@
-// Бизнес-логика работы с аптекой
+// Business logic for working with the pharmacy
 import crypto from "node:crypto";
 import { prisma } from "../db";
 import { HttpError } from "../errors";
@@ -12,12 +12,12 @@ async function loadPrescriptionFor(user: SessionUser, prescriptionId: number) {
     include: { items: true, patient: true },
   });
   if (!p) throw new HttpError(404, "Prescription not found");
-  // пациент — только свой рецепт; врач/админ — любой
+  // a patient — only their own prescription; a doctor/admin — any
   if (user.role === "PATIENT" && p.patient.userId !== user.id) throw new HttpError(404, "Prescription not found");
   return p;
 }
 
-/** Только данные о лекарствах — БЕЗ персональных данных пациента */
+/** Medicine data only — WITHOUT the patient's personal data */
 const toPharmacyItems = (items: { medicineName: string; genericName: string | null; dosage: string; quantity: number }[]): PharmacyItem[] =>
   items.map((i) => ({ name: i.medicineName, genericName: i.genericName, dosage: i.dosage, quantity: i.quantity }));
 

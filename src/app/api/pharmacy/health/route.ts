@@ -4,7 +4,7 @@ import { pharmacyClient } from "@/lib/services/pharmacy.client";
 
 export const dynamic = "force-dynamic";
 
-// Не бросаем ошибку — фронтенду нужен статус online/offline
+// Do not throw — the frontend needs the online/offline status
 export const GET = handler(async (req) => {
   await requireAuth(req);
   try {

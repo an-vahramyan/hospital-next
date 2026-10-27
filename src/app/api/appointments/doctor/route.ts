@@ -4,7 +4,7 @@ import { HttpError } from "@/lib/errors";
 import { isDateString, toLocalDateString } from "@/lib/date";
 import { doctorSchedule, getDoctorByUserId } from "@/lib/services/appointment.service";
 
-// Расписание врача на день
+// Doctor's schedule for the day
 export const GET = handler(async (req) => {
   const user = await requireAuth(req, "DOCTOR");
   const date = req.nextUrl.searchParams.get("date") || toLocalDateString();

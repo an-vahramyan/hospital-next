@@ -1,4 +1,4 @@
-// Защита страниц по ролям (API-маршруты проверяют права сами)
+// Page protection by role (API routes check permissions themselves)
 import { NextResponse, type NextRequest } from "next/server";
 import { TOKEN_COOKIE, homeFor, verifyToken, type Role } from "@/lib/session";
 

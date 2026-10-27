@@ -17,7 +17,7 @@ export function I18nProvider({ lang: initial, children }: { lang: Lang; children
       document.cookie = `${LANG_COOKIE}=${l}; path=/; max-age=31536000; samesite=lax`;
       document.documentElement.lang = l;
       setLangState(l);
-      router.refresh(); // перерисовать server components на новом языке
+      router.refresh(); // re-render server components in the new language
     },
     [router],
   );

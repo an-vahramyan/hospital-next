@@ -44,7 +44,7 @@ export async function register(data: {
 
 export async function login({ email, password }: { email: string; password: string }) {
   const user = await prisma.user.findUnique({ where: { email: email.toLowerCase().trim() } });
-  // одинаковое сообщение — не раскрываем, что именно неверно
+  // same message — do not reveal which part is wrong
   if (!user || !(await bcrypt.compare(password, user.passwordHash))) {
     throw new HttpError(401, "Invalid email or password", { code: "INVALID_CREDENTIALS" });
   }

@@ -6,6 +6,7 @@ import { useFetch } from "@/lib/client/hooks";
 import { useAuth } from "@/context/AuthContext";
 import { useI18n } from "@/i18n/I18nProvider";
 import { ErrorAlert, Spinner } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 export default function ProfilePage() {
   const { t } = useI18n();
@@ -77,7 +78,7 @@ export default function ProfilePage() {
         <label className="field full"><span>{t("patient.allergies")}</span><textarea className="textarea" value={form.allergies ?? ""} onChange={set("allergies")} /></label>
         <div className="full row">
           <button className="btn btn-primary" disabled={saving}>{saving ? t("common.loading") : t("common.save")}</button>
-          {saved && <span className="badge badge-success">✓ {t("common.saved")}</span>}
+          {saved && <span className="badge badge-success"><Icon name="check" size={14} /> {t("common.saved")}</span>}
         </div>
       </form>
     </>

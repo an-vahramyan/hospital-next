@@ -4,7 +4,7 @@ import { HttpError } from "@/lib/errors";
 import { prisma } from "@/lib/db";
 import { appointmentStatusSchema } from "@/lib/schemas";
 
-// Врач (свои приёмы) или админ меняет статус. COMPLETED + diagnosis → создаётся Visit
+// The doctor (own appointments) or an admin changes the status. COMPLETED + diagnosis → a Visit is created
 export const PATCH = handler<{ id: string }>(async (req, ctx) => {
   const user = await requireAuth(req, "DOCTOR", "ADMIN");
   const id = await idParam(ctx);

@@ -1,4 +1,4 @@
-// Юнит-тесты чистой логики:  npm test
+// Unit tests of pure logic:  npm test
 import test from "node:test";
 import assert from "node:assert/strict";
 import { addMinutes, atLocalTime, buildDaySlots, dayRange, isDateString, toLocalDateString } from "../src/lib/date";

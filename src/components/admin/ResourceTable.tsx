@@ -1,5 +1,5 @@
 "use client";
-// Универсальная CRUD-таблица для admin-страниц
+// Generic CRUD table for admin pages
 
 import { useMemo, useState } from "react";
 import { adminApi, ApiError } from "@/lib/client/api";
@@ -7,6 +7,7 @@ import { useFetch } from "@/lib/client/hooks";
 import { useI18n } from "@/i18n/I18nProvider";
 import Modal from "../Modal";
 import { ErrorAlert, Spinner, Empty } from "../ui";
+import Icon from "../Icon";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export type Column = { key: string; label: string; render?: (row: any) => React.ReactNode; className?: string };
@@ -26,9 +27,9 @@ type Props = {
   resource: string;
   columns: Column[];
   fields: Field[];
-  /** row → значения формы при редактировании */
+  /** row → form values when editing */
   toForm?: (row: any) => Record<string, unknown>;
-  /** значения формы → тело запроса */
+  /** form values → request body */
   toBody?: (values: Record<string, any>, mode: "create" | "edit") => Record<string, unknown>;
   defaults?: Record<string, unknown>;
   searchKeys?: string[];
@@ -121,7 +122,7 @@ export default function ResourceTable({ resource, columns, fields, toForm, toBod
         {searchKeys.length > 0 ? (
           <input className="input" style={{ maxWidth: 320 }} placeholder={t("common.search")} value={q} onChange={(e) => setQ(e.target.value)} />
         ) : <span />}
-        <button className="btn btn-primary" onClick={openCreate}>＋ {t("common.add")}</button>
+        <button className="btn btn-primary" onClick={openCreate}><Icon name="plus" size={18} /> {t("common.add")}</button>
       </div>
 
       <ErrorAlert error={actionError || error} t={t} />
@@ -147,8 +148,8 @@ export default function ResourceTable({ resource, columns, fields, toForm, toBod
                   ))}
                   <td>
                     <div className="actions">
-                      <button className="btn btn-sm" onClick={() => openEdit(row)}>✎ {t("common.edit")}</button>
-                      <button className="btn btn-sm btn-danger" onClick={() => remove(row)} aria-label={t("common.delete")}>🗑</button>
+                      <button className="btn btn-sm" onClick={() => openEdit(row)}><Icon name="edit" size={15} /> {t("common.edit")}</button>
+                      <button className="btn btn-sm btn-danger" onClick={() => remove(row)} aria-label={t("common.delete")}><Icon name="trash" size={15} /></button>
                     </div>
                   </td>
                 </tr>

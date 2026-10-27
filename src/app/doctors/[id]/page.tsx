@@ -5,6 +5,7 @@ import { deptName } from "@/i18n/translate";
 import { getDoctor } from "@/lib/services/catalog.service";
 import { Avatar } from "@/components/ui";
 import ServiceCard from "@/components/ServiceCard";
+import Icon from "@/components/Icon";
 
 async function load(id: string) {
   const n = Number(id);
@@ -36,11 +37,11 @@ export default async function DoctorPage({ params }: { params: Promise<{ id: str
               <span className="badge">{t("doctors.experience", { n: doctor.experienceYears })}</span>
             </div>
             <dl className="kv mt-2">
-              <dt>🕒 {t("doctors.workHours")}</dt><dd>{doctor.workStart} – {doctor.workEnd}</dd>
-              <dt>⏱ {t("doctors.slotLength")}</dt><dd>{t("services.duration", { n: doctor.slotMinutes })}</dd>
+              <dt className="with-icon"><Icon name="clock" size={16} /> {t("doctors.workHours")}</dt><dd>{doctor.workStart} – {doctor.workEnd}</dd>
+              <dt className="with-icon"><Icon name="timer" size={16} /> {t("doctors.slotLength")}</dt><dd>{t("services.duration", { n: doctor.slotMinutes })}</dd>
             </dl>
           </div>
-          <Link className="btn btn-primary btn-lg" href={`/book?doctorId=${doctor.id}`}>📅 {t("doctors.book")}</Link>
+          <Link className="btn btn-primary btn-lg" href={`/book?doctorId=${doctor.id}`}><Icon name="calendar" size={18} /> {t("doctors.book")}</Link>
         </div>
         {doctor.bio && (
           <div className="mt-3">

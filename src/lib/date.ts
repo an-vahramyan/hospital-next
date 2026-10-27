@@ -1,4 +1,4 @@
-// Работа с датами в ЛОКАЛЬНОМ времени сервера (не UTC)
+// Working with dates in the server's LOCAL time (not UTC)
 const pad = (n: number) => String(n).padStart(2, "0");
 
 export function toLocalDateString(date: Date = new Date()): string {
@@ -9,7 +9,7 @@ export function addMinutes(date: Date, minutes: number): Date {
   return new Date(date.getTime() + minutes * 60_000);
 }
 
-/** "2026-10-24" + "09:30" → Date (локальное время) */
+/** "2026-10-24" + "09:30" → Date (local time) */
 export function atLocalTime(dateStr: string, hhmm: string): Date {
   const [y, m, d] = dateStr.split("-").map(Number);
   const [h, min] = hhmm.split(":").map(Number);
@@ -25,7 +25,7 @@ export function dayRange(dateStr: string): { start: Date; end: Date } {
 
 export const isDateString = (s: string) => /^\d{4}-\d{2}-\d{2}$/.test(s);
 
-/** Все слоты дня по рабочему графику врача (без учёта занятости) */
+/** All slots of the day according to the doctor's work schedule (ignoring bookings) */
 export function buildDaySlots(dateStr: string, workStart: string, workEnd: string, slotMinutes: number): Date[] {
   const slots: Date[] = [];
   const end = atLocalTime(dateStr, workEnd);

@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { examinationUpdateSchema } from "@/lib/schemas";
 
-// Внести результат обследования
+// Enter an examination result
 export const PATCH = handler<{ id: string }>(async (req, ctx) => {
   await requireAuth(req, "DOCTOR", "ADMIN");
   const id = await idParam(ctx);

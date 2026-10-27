@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import { useAuth, homeForRole } from "@/context/AuthContext";
 import { useI18n } from "@/i18n/I18nProvider";
 import LanguageSwitcher from "./LanguageSwitcher";
+import Icon from "../Icon";
 
 const NAV = [
   { href: "/", key: "nav.home" },
@@ -29,7 +30,7 @@ export default function Header() {
 
   const accountButtons = user ? (
     <>
-      <Link className="btn btn-sm" href={homeForRole(user.role)}>👤 {cabinetLabel}</Link>
+      <Link className="btn btn-sm" href={homeForRole(user.role)}><Icon name="user" size={16} /> {cabinetLabel}</Link>
       <button className="btn btn-sm btn-ghost" onClick={logout}>{t("nav.logout")}</button>
     </>
   ) : (
@@ -40,7 +41,7 @@ export default function Header() {
     <header className="site-header">
       <div className="container">
         <Link href="/" className="logo" aria-label={t("brand.name")}>
-          <span className="logo-mark" aria-hidden>✚</span>
+          <span className="logo-mark" aria-hidden><Icon name="cross" size={22} /></span>
           <span className="logo-text">
             {t("brand.name")}
             <small>{t("brand.tagline")}</small>
@@ -60,7 +61,7 @@ export default function Header() {
           <span className="desktop-only row" style={{ gap: 8 }}>{accountButtons}</span>
           {!user && <Link className="btn btn-sm btn-primary desktop-only" href="/book">{t("nav.book")}</Link>}
           <button className="icon-btn burger" aria-label={t("nav.menu")} aria-expanded={open} onClick={() => setOpen((o) => !o)}>
-            {open ? "✕" : "☰"}
+            {open ? <Icon name="x" size={20} /> : <Icon name="menu" size={20} />}
           </button>
         </div>
       </div>

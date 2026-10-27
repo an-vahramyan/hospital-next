@@ -1,5 +1,5 @@
-// Smoke-тест всего API. Сервер должен быть запущен (npm run dev / start), mock-аптека — по желанию.
-// Запуск: npm run smoke   (BASE_URL=http://localhost:4000 по умолчанию)
+// Smoke test of the whole API. The server must be running (npm run dev / start); the mock pharmacy is optional.
+// Run: npm run smoke   (BASE_URL=http://localhost:4000 by default)
 const BASE = process.env.BASE_URL || "http://localhost:4000";
 const INTEGRATION_KEY = process.env.INTEGRATION_API_KEY || "hospital-key-for-milena";
 let passed = 0, failed = 0;

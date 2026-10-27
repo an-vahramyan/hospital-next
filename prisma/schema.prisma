@@ -1,18 +1,17 @@
 // ============================================================
-// Схема базы данных (Prisma)
+// Data Base Schema(Prisma)
 // ============================================================
-// После изменений:   npm run db:migrate   (prisma migrate dev)
-// Просмотр данных:   npm run db:studio
+// After Changes:   npm run db:migrate   (prisma migrate dev)
+// Data Read:   npm run db:studio
 //
-// SQLite не поддерживает enum, поэтому role/status — String,
-// допустимые значения указаны в комментариях и проверяются zod-ом в API.
+// SQLite don't support enum => role/status — String,
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite" // для PostgreSQL: "postgresql"
+  provider = "sqlite" // for PostgreSQL: "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -82,7 +81,7 @@ model Service {
   id           Int        @id @default(autoincrement())
   name         String
   description  String?
-  price        Int // драм (֏)
+  price        Int // Armenian dram (֏)
   durationMin  Int        @default(30)
   departmentId Int
   department   Department @relation(fields: [departmentId], references: [id])
@@ -131,7 +130,7 @@ model Visit {
 
 model Prescription {
   id         Int                @id @default(autoincrement())
-  code       String             @unique // "RX-2026-0001" — по нему аптека узнаёт рецепт
+  code       String             @unique // "RX-2026-0001" — the pharmacy identifies the prescription by it
   patientId  Int
   patient    Patient            @relation(fields: [patientId], references: [id], onDelete: Cascade)
   doctorId   Int
@@ -193,8 +192,7 @@ model QueueTicket {
 
   @@unique([departmentId, date, number])
 }
-
-// Лог запросов, отправленных в аптеку
+//pharamsy request 
 model PharmacyRequest {
   id             Int           @id @default(autoincrement())
   requestId      String        @unique
@@ -208,7 +206,7 @@ model PharmacyRequest {
   createdAt      DateTime      @default(now())
 }
 
-// Уведомления, пришедшие из аптеки
+//Notification model from pharamcy 
 model Notification {
   id               Int      @id @default(autoincrement())
   type             String // RESERVATION_READY | OUT_OF_STOCK | RESERVATION_EXPIRED | INFO

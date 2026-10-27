@@ -1,4 +1,4 @@
-// Реестр ресурсов для универсального CRUD (admin)
+// Resource registry for the generic CRUD (admin)
 import type { ZodObject, ZodRawShape } from "zod";
 import { prisma } from "../db";
 import { HttpError } from "../errors";

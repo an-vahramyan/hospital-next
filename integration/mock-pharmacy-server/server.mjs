@@ -1,14 +1,14 @@
 // ============================================================
-// Mock-сервер аптеки (замена сервера Милены для тестов)
-// Реализует раздел A контракта docs/pharmacy-api-contract.md, порт 5000.
-// Запуск: npm run pharmacy:mock   (без зависимостей — только node:http)
+// Mock-server pharamcy (for test)
+// docs/pharmacy-api-contract.md, port 5000.
+// for run: npm run pharmacy:mock   (node:http)
 // ============================================================
 import http from "node:http";
 import crypto from "node:crypto";
 
 const PORT = Number(process.env.PORT || 5000);
 const API_KEY = process.env.PHARMACY_API_KEY || "pharmacy-key-from-milena";
-// Куда слать уведомление «лекарства готовы» (раздел B контракта)
+// where to send messages (section B of the contract)
 const HOSPITAL_URL = process.env.HOSPITAL_API_URL || "http://localhost:4000";
 const HOSPITAL_KEY = process.env.INTEGRATION_API_KEY || "hospital-key-for-milena";
 const READY_AFTER_MS = Number(process.env.READY_AFTER_MS || 5000);

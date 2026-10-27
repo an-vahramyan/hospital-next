@@ -3,7 +3,7 @@ import { requireAuth } from "@/lib/auth";
 import { prisma } from "@/lib/db";
 import { examinationSchema } from "@/lib/schemas";
 
-// Назначить обследование
+// Order an examination
 export const POST = handler(async (req) => {
   await requireAuth(req, "DOCTOR", "ADMIN");
   const data = await parseBody(req, examinationSchema);

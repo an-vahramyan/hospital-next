@@ -1,4 +1,4 @@
-// Аутентификация в route handlers и server components
+// Authentication in route handlers and server components
 import { cookies } from "next/headers";
 import type { NextRequest, NextResponse } from "next/server";
 import { HttpError } from "./errors";
@@ -6,7 +6,7 @@ import { TOKEN_COOKIE, verifyToken, type Role, type SessionUser } from "./sessio
 
 export type { Role, SessionUser };
 
-/** Токен берём из "Authorization: Bearer ..." или из httpOnly cookie */
+/** The token comes from "Authorization: Bearer ..." or the httpOnly cookie */
 export async function getSessionUser(req?: NextRequest): Promise<SessionUser | null> {
   let token: string | undefined;
   const header = req?.headers.get("authorization");

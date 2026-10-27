@@ -4,7 +4,7 @@ import { HttpError } from "@/lib/errors";
 import { prisma } from "@/lib/db";
 import { effectiveStatus } from "@/lib/services/prescription.service";
 
-// Проверка подлинности рецепта. Персональные данные пациента НЕ отдаём.
+// Prescription authenticity check. Patient personal data is NOT returned.
 export const GET = handler<{ code: string }>(async (req, ctx) => {
   requireApiKey(req);
   const { code } = await ctx.params;

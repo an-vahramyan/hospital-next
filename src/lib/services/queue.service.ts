@@ -1,4 +1,4 @@
-// Онлайн-очередь
+// Online queue
 import { prisma } from "../db";
 import { HttpError } from "../errors";
 import { toLocalDateString } from "../date";
@@ -17,7 +17,7 @@ export async function takeTicket({ departmentId, patientId }: { departmentId: nu
     if (existing) return existing;
   }
 
-  // транзакция: последний номер за сегодня + 1 (unique [departmentId, date, number] страхует от гонки)
+  // transaction: last number today + 1 (unique [departmentId, date, number] protects against a race)
   return prisma.$transaction(async (tx) => {
     const last = await tx.queueTicket.findFirst({
       where: { departmentId, date },

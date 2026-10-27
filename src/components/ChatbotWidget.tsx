@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { chatbotApi } from "@/lib/client/api";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Avatar } from "./ui";
+import Icon from "./Icon";
 
 type Doc = { id: number; specialty: string; user: { firstName: string; lastName: string }; photoUrl?: string | null };
 type Msg = { role: "user" | "assistant"; content: string; department?: string | null; doctors?: Doc[]; error?: boolean };
@@ -51,10 +52,10 @@ export default function ChatbotWidget() {
         <section className="chat-panel" aria-label={t("chat.title")}>
           <div className="chat-head">
             <div>
-              <strong>🤖 {t("chat.title")}</strong>
+              <strong className="with-icon"><Icon name="headset" size={18} /> {t("chat.title")}</strong>
               <p>{t("chat.subtitle")}</p>
             </div>
-            <button onClick={() => setOpen(false)} aria-label={t("common.close")}>✕</button>
+            <button onClick={() => setOpen(false)} aria-label={t("common.close")}><Icon name="x" size={18} /></button>
           </div>
 
           <div className="chat-body" aria-live="polite">
@@ -102,14 +103,14 @@ export default function ChatbotWidget() {
                 placeholder={t("chat.placeholder")}
                 aria-label={t("chat.placeholder")}
               />
-              <button className="btn btn-primary" disabled={loading || !input.trim()} aria-label={t("chat.send")}>➤</button>
+              <button className="btn btn-primary" disabled={loading || !input.trim()} aria-label={t("chat.send")}><Icon name="send" size={18} /></button>
             </form>
             <p className="chat-disclaimer">{t("chat.disclaimer")}</p>
           </div>
         </section>
       )}
       <button className="chat-fab" onClick={() => setOpen((o) => !o)} aria-label={t("chat.open")} aria-expanded={open}>
-        {open ? "✕" : "💬"}
+        {open ? <Icon name="x" size={24} /> : <Icon name="message" size={24} />}
       </button>
     </>
   );

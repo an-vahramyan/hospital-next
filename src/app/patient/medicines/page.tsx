@@ -6,6 +6,7 @@ import { patientApi, pharmacyApi, type ApiError } from "@/lib/client/api";
 import { useFetch } from "@/lib/client/hooks";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Empty, Spinner, StatusBadge } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 function MedicinesInner() {
@@ -56,13 +57,13 @@ function MedicinesInner() {
         </div>
         {health.data && (
           <span className={`badge ${health.data.online ? "badge-success" : "badge-danger"}`} style={{ fontSize: "0.85rem", padding: "6px 12px" }}>
-            {health.data.online ? "🟢" : "🔴"} {health.data.online ? t("pharmacy.online") : t("pharmacy.offline")}
+            <span className="dot" /> {health.data.online ? t("pharmacy.online") : t("pharmacy.offline")}
           </span>
         )}
       </div>
 
       {prescriptions.loading && !prescriptions.data ? <Spinner /> : active.length === 0 ? (
-        <Empty icon="💊" title={t("pharmacy.noActive")} />
+        <Empty icon="pill" title={t("pharmacy.noActive")} />
       ) : (
         <div className="card stack">
           <label className="field">
@@ -74,7 +75,7 @@ function MedicinesInner() {
                 ))}
               </select>
               <button className="btn btn-primary" onClick={check} disabled={!selected || busy !== null}>
-                {busy === "check" ? t("pharmacy.checking") : `🔍 ${t("pharmacy.check")}`}
+                {busy === "check" ? t("pharmacy.checking") : <><Icon name="search" size={18} /> {t("pharmacy.check")}</>}
               </button>
             </div>
           </label>
@@ -83,8 +84,8 @@ function MedicinesInner() {
 
           {result && (
             <>
-              <div className={`alert ${allAvailable ? "alert-success" : "alert-warning"}`}>
-                {allAvailable ? `✓ ${t("pharmacy.allAvailable")}` : `⚠ ${t("pharmacy.someMissing")}`}
+              <div className={`alert with-icon ${allAvailable ? "alert-success" : "alert-warning"}`}>
+                {allAvailable ? <><Icon name="checkCircle" size={18} /> {t("pharmacy.allAvailable")}</> : <><Icon name="alert" size={18} /> {t("pharmacy.someMissing")}</>}
               </div>
               <div className="table-wrap">
                 <table className="table">
@@ -112,7 +113,7 @@ function MedicinesInner() {
               </div>
               {allAvailable && !reservation && (
                 <button className="btn btn-accent btn-lg" style={{ alignSelf: "flex-start" }} onClick={reserve} disabled={busy !== null}>
-                  {busy === "reserve" ? t("common.loading") : `🛒 ${t("pharmacy.reserve")}`}
+                  {busy === "reserve" ? t("common.loading") : <><Icon name="bag" size={18} /> {t("pharmacy.reserve")}</>}
                 </button>
               )}
             </>
@@ -120,7 +121,7 @@ function MedicinesInner() {
 
           {reservation && (
             <div className="alert alert-success stack-sm">
-              <strong>✓ {t("pharmacy.reserved")}</strong>
+              <strong className="with-icon"><Icon name="checkCircle" size={18} /> {t("pharmacy.reserved")}</strong>
               <span>{t("pharmacy.reservationId")}: <b>{reservation.reservationId}</b> · <StatusBadge status={reservation.status} t={t} /></span>
               {reservation.total != null && <span>{t("common.total")}: <b>{f.money(reservation.total)}</b></span>}
               {reservation.expiresAt && <span>{t("pharmacy.expires")}: {f.dateTime(reservation.expiresAt)}</span>}

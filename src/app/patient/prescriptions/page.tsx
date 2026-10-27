@@ -5,6 +5,7 @@ import { patientApi } from "@/lib/client/api";
 import { useFetch } from "@/lib/client/hooks";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Empty, ErrorAlert, Spinner, StatusBadge } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default function PrescriptionsPage() {
@@ -15,7 +16,7 @@ export default function PrescriptionsPage() {
     <>
       <h1>{t("patient.prescriptions")}</h1>
       <ErrorAlert error={error} t={t} />
-      {loading && !data ? <Spinner /> : !data?.length ? <Empty icon="📝" title={t("patient.noPrescriptions")} /> : (
+      {loading && !data ? <Spinner /> : !data?.length ? <Empty icon="fileText" title={t("patient.noPrescriptions")} /> : (
         <div className="stack">
           {data.map((p: any) => (
             <article key={p.id} className="card stack">
@@ -25,7 +26,7 @@ export default function PrescriptionsPage() {
                   <StatusBadge status={p.status} t={t} />
                 </div>
                 {p.status === "ACTIVE" && (
-                  <Link className="btn btn-sm btn-primary" href={`/patient/medicines?prescription=${p.id}`}>💊 {t("patient.checkPharmacy")}</Link>
+                  <Link className="btn btn-sm btn-primary" href={`/patient/medicines?prescription=${p.id}`}><Icon name="pill" size={16} /> {t("patient.checkPharmacy")}</Link>
                 )}
               </div>
               <dl className="kv">

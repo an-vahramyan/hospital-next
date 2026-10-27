@@ -7,6 +7,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useI18n } from "@/i18n/I18nProvider";
 import { deptName } from "@/i18n/translate";
 import { ErrorAlert } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 type Dept = { id: number; slug: string; name: string };
 type Status = {
@@ -28,7 +29,7 @@ function beep() {
     o.connect(g); g.connect(ctx.destination);
     o.frequency.value = 880; g.gain.value = 0.15;
     o.start(); o.stop(ctx.currentTime + 0.6);
-  } catch { /* звук недоступен */ }
+  } catch { /* sound unavailable */ }
 }
 
 export default function QueueClient({ departments }: { departments: Dept[] }) {
@@ -145,7 +146,7 @@ export default function QueueClient({ departments }: { departments: Dept[] }) {
               </select>
             </label>
             {user ? (
-              <button className="btn btn-primary btn-lg" onClick={take} disabled={busy || !deptId}>🎟️ {t("queue.take")}</button>
+              <button className="btn btn-primary btn-lg" onClick={take} disabled={busy || !deptId}><Icon name="ticket" size={20} /> {t("queue.take")}</button>
             ) : (
               <div className="alert alert-info">
                 {t("queue.loginRequired")} — <Link href="/login?next=/queue">{t("nav.login")}</Link>
@@ -158,7 +159,7 @@ export default function QueueClient({ departments }: { departments: Dept[] }) {
 
       <div className="card stack">
         <div className="row-between">
-          <h3>📺 {t("queue.board")}</h3>
+          <h3 className="with-icon"><Icon name="monitor" size={20} /> {t("queue.board")}</h3>
           {dept && <span className="badge badge-primary">{deptName(t, dept)}</span>}
         </div>
         {!tk && (
@@ -179,7 +180,7 @@ export default function QueueClient({ departments }: { departments: Dept[] }) {
             <p className="xs muted mt-1">{t("queue.waitingCount", { n: board?.waitingCount ?? 0 })}</p>
           </div>
         </div>
-        {isStaff && <button className="btn btn-accent" onClick={callNext} disabled={busy}>📢 {t("queue.callNext")}</button>}
+        {isStaff && <button className="btn btn-accent" onClick={callNext} disabled={busy}><Icon name="megaphone" size={18} /> {t("queue.callNext")}</button>}
       </div>
     </div>
   );

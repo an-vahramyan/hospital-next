@@ -1,4 +1,4 @@
-// Prisma Client — один экземпляр на всё приложение (переживает hot-reload в dev)
+// Prisma Client — a single instance for the whole app (survives hot reload in dev)
 import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };

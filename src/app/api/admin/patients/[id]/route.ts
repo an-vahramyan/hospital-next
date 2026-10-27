@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 
 const doctorName = { include: { user: { select: { firstName: true, lastName: true } } } } as const;
 
-// Полная история пациента
+// Full patient history
 export const GET = handler<{ id: string }>(async (req, ctx) => {
   await requireAuth(req, "ADMIN");
   const p = await prisma.patient.findUnique({

@@ -8,6 +8,7 @@ import { useI18n } from "@/i18n/I18nProvider";
 import { deptName } from "@/i18n/translate";
 import Modal from "@/components/Modal";
 import { Empty, ErrorAlert, Spinner, StatusBadge } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type Item = { medicineName: string; genericName: string; dosage: string; frequency: string; durationDays: string; quantity: string };
@@ -80,11 +81,11 @@ export default function DoctorCabinet() {
         </div>
         {doctor && (
           <div className="row">
-            <Link className="btn" href="/queue">📺 {t("doctorCab.queue")}</Link>
+            <Link className="btn" href="/queue"><Icon name="monitor" size={18} /> {t("doctorCab.queue")}</Link>
             <button className="btn btn-accent" disabled={busy} onClick={() => run(async () => {
               const r = await queueApi.next(doctor.departmentId);
-              setNotice(r.called ? `📢 ${t("queue.current")}: ${r.called.number}` : t("queue.nobody"));
-            })}>📢 {t("queue.callNext")}</button>
+              setNotice(r.called ? `${t("queue.current")}: ${r.called.number}` : t("queue.nobody"));
+            })}><Icon name="megaphone" size={18} /> {t("queue.callNext")}</button>
           </div>
         )}
       </div>
@@ -94,14 +95,14 @@ export default function DoctorCabinet() {
 
       <section className="card stack">
         <div className="row-between">
-          <h3>📅 {t("doctorCab.schedule")}</h3>
+          <h3 className="with-icon"><Icon name="calendar" size={20} /> {t("doctorCab.schedule")}</h3>
           <div className="row">
             <button className="btn btn-sm" onClick={() => setDate(todayStr())}>{t("common.today")}</button>
             <input className="input" type="date" value={date} onChange={(e) => setDate(e.target.value)} style={{ width: 180 }} />
           </div>
         </div>
         {schedule.loading && !schedule.data ? <Spinner /> : !schedule.data?.appointments.length ? (
-          <Empty icon="🗓️" title={t("doctorCab.noAppointments")} />
+          <Empty icon="calendar" title={t("doctorCab.noAppointments")} />
         ) : (
           <div className="table-wrap">
             <table className="table">
@@ -113,7 +114,7 @@ export default function DoctorCabinet() {
                     <td>
                       {a.patient.user.firstName} {a.patient.user.lastName}
                       <div className="xs muted">{a.patient.user.phone ?? a.patient.user.email}</div>
-                      {a.notes && <div className="xs">💬 {a.notes}</div>}
+                      {a.notes && <div className="xs"><Icon name="message" size={13} /> {a.notes}</div>}
                     </td>
                     <td className="small">{a.service?.name ?? "—"}</td>
                     <td><StatusBadge status={a.status} t={t} /></td>
@@ -121,12 +122,12 @@ export default function DoctorCabinet() {
                       <div className="actions">
                         {a.status === "BOOKED" && (
                           <>
-                            <button className="btn btn-sm btn-primary" onClick={() => open("complete", { appt: a })}>✓ {t("doctorCab.complete")}</button>
+                            <button className="btn btn-sm btn-primary" onClick={() => open("complete", { appt: a })}><Icon name="check" size={16} /> {t("doctorCab.complete")}</button>
                             <button className="btn btn-sm" onClick={() => run(() => appointmentsApi.setStatus(a.id, { status: "NO_SHOW" }))}>{t("doctorCab.noShow")}</button>
                           </>
                         )}
-                        <button className="btn btn-sm" onClick={() => open("rx", { appt: a })}>📝 {t("doctorCab.prescribe")}</button>
-                        <button className="btn btn-sm" onClick={() => open("exam", { appt: a })}>🧪 {t("doctorCab.orderExam")}</button>
+                        <button className="btn btn-sm" onClick={() => open("rx", { appt: a })}><Icon name="fileText" size={16} /> {t("doctorCab.prescribe")}</button>
+                        <button className="btn btn-sm" onClick={() => open("exam", { appt: a })}><Icon name="flask" size={16} /> {t("doctorCab.orderExam")}</button>
                       </div>
                     </td>
                   </tr>
@@ -138,14 +139,14 @@ export default function DoctorCabinet() {
       </section>
 
       <section className="card stack">
-        <h3>👥 {t("doctorCab.myPatients")}</h3>
+        <h3 className="with-icon"><Icon name="users" size={20} /> {t("doctorCab.myPatients")}</h3>
         {patients.loading && !patients.data ? <Spinner /> : !patients.data?.length ? <p>{t("doctorCab.noPatients")}</p> : (
           <div className="list">
             {patients.data.map((p: any) => (
               <div key={p.id} className="list-item" style={{ alignItems: "flex-start" }}>
                 <div className="stack-sm" style={{ flex: 1, minWidth: 240 }}>
                   <strong>{p.user.firstName} {p.user.lastName}</strong>
-                  <span className="xs muted">{p.user.email}{p.allergies && ` · ⚠ ${t("patient.allergies")}: ${p.allergies}`}</span>
+                  <span className="xs muted">{p.user.email}{p.allergies && ` · ${t("patient.allergies")}: ${p.allergies}`}</span>
                   {p.prescriptions.length > 0 && (
                     <div className="row" style={{ gap: 6 }}>
                       {p.prescriptions.map((rx: any) => <span key={rx.id} className="badge">{rx.code}</span>)}
@@ -161,8 +162,8 @@ export default function DoctorCabinet() {
                   ))}
                 </div>
                 <div className="row">
-                  <button className="btn btn-sm" onClick={() => open("rx", { patient: p })}>📝 {t("doctorCab.prescribe")}</button>
-                  <button className="btn btn-sm" onClick={() => open("exam", { patient: p })}>🧪 {t("doctorCab.orderExam")}</button>
+                  <button className="btn btn-sm" onClick={() => open("rx", { patient: p })}><Icon name="fileText" size={16} /> {t("doctorCab.prescribe")}</button>
+                  <button className="btn btn-sm" onClick={() => open("exam", { patient: p })}><Icon name="flask" size={16} /> {t("doctorCab.orderExam")}</button>
                 </div>
               </div>
             ))}

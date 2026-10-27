@@ -1,6 +1,7 @@
 import { getI18n } from "@/i18n/server";
 import { listEquipment } from "@/lib/services/catalog.service";
 import { Empty } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 export async function generateMetadata() {
   const { t } = await getI18n();
@@ -25,7 +26,7 @@ export default async function EquipmentPage() {
               <article key={e.id} className="card equip-card card-hover">
                 <div className="equip-media">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  {e.imageUrl ? <img src={e.imageUrl} alt={e.name} /> : <span aria-hidden>🩻</span>}
+                  {e.imageUrl ? <img src={e.imageUrl} alt={e.name} /> : <Icon name="scan" size={44} className="equip-ph" />}
                   {e.isNew && <span className="badge badge-new">{t("equipment.new")}</span>}
                 </div>
                 <div className="equip-body">

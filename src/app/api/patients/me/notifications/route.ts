@@ -13,7 +13,7 @@ export const GET = handler(async (req) => {
   });
 });
 
-// Отметить все как прочитанные
+// Mark all as read
 export const PATCH = handler(async (req) => {
   const patient = await getPatientByUserId((await requireAuth(req, "PATIENT")).id);
   const { count } = await prisma.notification.updateMany({

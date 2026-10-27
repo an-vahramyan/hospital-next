@@ -27,7 +27,7 @@ export default async function DoctorsPage({ searchParams }: { searchParams: Prom
         </Suspense>
         <p className="small mb-2">{t("doctors.found", { n: doctors.length })}</p>
         {doctors.length === 0 ? (
-          <Empty icon="🔍" title={t("doctors.notFound")} hint={t("doctors.notFoundHint")} />
+          <Empty icon="search" title={t("doctors.notFound")} hint={t("doctors.notFoundHint")} />
         ) : (
           <div className="grid grid-auto">
             {doctors.map((d) => <DoctorCard key={d.id} doctor={d} t={t} />)}

@@ -7,6 +7,7 @@ import { todayStr } from "@/lib/client/hooks";
 import { useI18n } from "@/i18n/I18nProvider";
 import { deptName } from "@/i18n/translate";
 import { Spinner } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 type Dept = { id: number; slug: string; name: string };
 type Doctor = { id: number; specialty: string; slotMinutes?: number; user: { firstName: string; lastName: string }; department: Dept };
@@ -15,7 +16,7 @@ type Service = { id: number; name: string; price: number; durationMin: number };
 function Step({ n, title, done, disabled, children }: { n: number; title: string; done: boolean; disabled?: boolean; children: React.ReactNode }) {
   return (
     <div className={`step card ${done ? "done" : ""} ${disabled ? "disabled" : ""}`}>
-      <div className="step-num">{done ? "✓" : n}</div>
+      <div className="step-num">{done ? <Icon name="check" size={18} /> : n}</div>
       <div className="stack-sm">
         <h3>{title}</h3>
         {children}
@@ -42,7 +43,7 @@ export default function BookingWizard({ departments }: { departments: Dept[] }) 
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // ?doctorId= → подставить отделение врача
+  // ?doctorId= → pre-select the doctor's department
   useEffect(() => {
     const id = params.get("doctorId");
     if (id && !params.get("department")) {
@@ -163,7 +164,7 @@ export default function BookingWizard({ departments }: { departments: Dept[] }) 
         </dl>
         {error && <div className="alert alert-error" role="alert">{error}</div>}
         <button className="btn btn-primary btn-lg" disabled={!slot || submitting} onClick={submit}>
-          {submitting ? t("common.loading") : `✓ ${t("book.confirm")}`}
+          {submitting ? t("common.loading") : <><Icon name="check" size={18} /> {t("book.confirm")}</>}
         </button>
       </aside>
     </div>

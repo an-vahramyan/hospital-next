@@ -1,4 +1,4 @@
-// Публичные данные (используются и API, и server components)
+// Public data (used by both the API and server components)
 import type { Prisma } from "@prisma/client";
 import { prisma } from "../db";
 import { HttpError } from "../errors";
@@ -12,7 +12,7 @@ export async function listDoctors(params: { q?: string; department?: string; spe
   const where: Prisma.DoctorWhereInput = {};
   const q = params.q?.trim();
   if (q) {
-    // SQLite: contains регистрозависим для не-ASCII, поэтому ищем несколько вариантов
+    // SQLite: contains is case-sensitive for non-ASCII, so we search several variants
     const variants = Array.from(new Set([q, q.toLowerCase(), q[0].toUpperCase() + q.slice(1).toLowerCase()]));
     where.OR = variants.flatMap((v) => [
       { user: { firstName: { contains: v } } },

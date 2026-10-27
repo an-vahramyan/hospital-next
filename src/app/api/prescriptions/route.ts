@@ -5,7 +5,7 @@ import { prisma } from "@/lib/db";
 import { prescriptionSchema } from "@/lib/schemas";
 import { createPrescription } from "@/lib/services/prescription.service";
 
-// Выписать рецепт (врач — от своего имени, админ — указывает doctorId)
+// Issue a prescription (a doctor on their own behalf, an admin specifies doctorId)
 export const POST = handler(async (req) => {
   const user = await requireAuth(req, "DOCTOR", "ADMIN");
   const data = await parseBody(req, prescriptionSchema);

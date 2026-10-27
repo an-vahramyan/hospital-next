@@ -4,6 +4,7 @@ import { patientApi } from "@/lib/client/api";
 import { useFetch } from "@/lib/client/hooks";
 import { useI18n } from "@/i18n/I18nProvider";
 import { Empty, ErrorAlert, Spinner, StatusBadge } from "@/components/ui";
+import Icon from "@/components/Icon";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export default function ExaminationsPage() {
@@ -13,7 +14,7 @@ export default function ExaminationsPage() {
     <>
       <h1>{t("patient.examinations")}</h1>
       <ErrorAlert error={error} t={t} />
-      {loading && !data ? <Spinner /> : !data?.length ? <Empty icon="🧪" title={t("patient.noExams")} /> : (
+      {loading && !data ? <Spinner /> : !data?.length ? <Empty icon="flask" title={t("patient.noExams")} /> : (
         <div className="table-wrap">
           <table className="table">
             <thead>
@@ -26,7 +27,7 @@ export default function ExaminationsPage() {
                   <td><StatusBadge status={e.status} t={t} /></td>
                   <td className="nowrap">{f.dateShort(e.orderedAt)}</td>
                   <td>{e.result ? <>{e.result}{e.resultAt && <div className="xs muted">{f.dateShort(e.resultAt)}</div>}</> : <span className="muted">{t("patient.waitingResult")}</span>}</td>
-                  <td>{e.fileUrl ? <a href={e.fileUrl} target="_blank" rel="noreferrer">📎 {t("common.view")}</a> : "—"}</td>
+                  <td>{e.fileUrl ? <a href={e.fileUrl} target="_blank" rel="noreferrer"><Icon name="paperclip" size={14} /> {t("common.view")}</a> : "—"}</td>
                 </tr>
               ))}
             </tbody>

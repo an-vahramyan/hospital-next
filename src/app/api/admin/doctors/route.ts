@@ -15,7 +15,7 @@ export const GET = handler(async (req) => {
   return prisma.doctor.findMany({ include: adminDoctorInclude, orderBy: { id: "asc" } });
 });
 
-// Создаёт User (role DOCTOR) + Doctor
+// Creates User (role DOCTOR) + Doctor
 export const POST = handler(async (req) => {
   await requireAuth(req, "ADMIN");
   const { email, password, firstName, lastName, phone, ...doctor } = await parseBody(req, doctorCreateSchema);

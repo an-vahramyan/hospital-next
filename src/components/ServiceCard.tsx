@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Formatters, TFunction } from "@/i18n/translate";
 import { deptName } from "@/i18n/translate";
+import Icon from "./Icon";
 
 export type ServiceCardData = {
   id: number;
@@ -20,7 +21,7 @@ export default function ServiceCard({ service, t, f, showDept = true }: { servic
       <div className="foot">
         <div>
           <div className="price">{f.money(service.price)}</div>
-          <div className="xs muted">⏱ {t("services.duration", { n: service.durationMin })}</div>
+          <div className="xs muted with-icon"><Icon name="timer" size={14} /> {t("services.duration", { n: service.durationMin })}</div>
         </div>
         {service.department && (
           <Link className="btn btn-sm" href={`/book?department=${service.department.slug}&serviceId=${service.id}`}>

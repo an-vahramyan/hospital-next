@@ -1,5 +1,5 @@
 "use client";
-// Клиентские API-функции (cookie с токеном отправляется автоматически)
+// Client API functions (the cookie with the token is sent automatically)
 
 export class ApiError extends Error {
   status: number;

@@ -44,7 +44,7 @@ export async function book(
   if (Number.isNaN(startsAt.getTime())) throw new HttpError(400, "Invalid startsAt");
   if (startsAt.getTime() <= Date.now()) throw new HttpError(400, "Cannot book in the past");
 
-  // время должно совпадать с одним из слотов графика
+  // the time must match one of the schedule's slots
   const pad = (n: number) => String(n).padStart(2, "0");
   const dateStr = `${startsAt.getFullYear()}-${pad(startsAt.getMonth() + 1)}-${pad(startsAt.getDate())}`;
   const valid = buildDaySlots(dateStr, doctor.workStart, doctor.workEnd, doctor.slotMinutes).some(
@@ -59,7 +59,7 @@ export async function book(
 
   const endsAt = addMinutes(startsAt, doctor.slotMinutes);
 
-  // транзакция: проверка + создание, чтобы двое не заняли одно время
+  // transaction: check + create, so that two people cannot take the same time
   return prisma.$transaction(async (tx) => {
     const clash = await tx.appointment.findFirst({
       where: { doctorId: doctor.id, status: "BOOKED", startsAt },

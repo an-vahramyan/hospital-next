@@ -3,6 +3,8 @@ import { getI18n } from "@/i18n/server";
 import { listArticles, listDoctors, listEquipment, listServices, publicStats } from "@/lib/services/catalog.service";
 import DoctorCard from "@/components/DoctorCard";
 import ServiceCard from "@/components/ServiceCard";
+import Icon from "@/components/Icon";
+import ImageSlot from "@/components/ImageSlot";
 
 export default async function HomePage() {
   const { t, f, lang } = await getI18n();
@@ -20,63 +22,103 @@ export default async function HomePage() {
       {/* Hero */}
       <section className="hero">
         <div className="container hero-grid">
-          <div>
-            <span className="hero-pill"><span className="dot" style={{ color: "var(--success)" }} /> {t("home.pill")}</span>
+          <div className="hero-copy">
+            <span className="hero-pill"><span className="dot" /> {t("home.pill")}</span>
             <h1>
               {t("home.heroTitle1")} <em>{t("home.heroTitle2")}</em>
             </h1>
             <p className="hero-sub">{t("home.heroSubtitle")}</p>
             <div className="hero-actions">
-              <Link className="btn btn-primary btn-lg" href="/book">📅 {t("home.bookCta")}</Link>
-              <Link className="btn btn-lg" href="/doctors">🔍 {t("home.findDoctor")}</Link>
+              <Link className="btn btn-primary btn-lg" href="/book"><Icon name="calendar" /> {t("home.bookCta")}</Link>
+              <Link className="btn btn-lg" href="/doctors"><Icon name="search" /> {t("home.findDoctor")}</Link>
             </div>
           </div>
-          <div className="hero-card stack">
-            <h3>{t("home.quickTitle")}</h3>
-            <Link className="btn btn-block" href="/queue" style={{ justifyContent: "flex-start" }}>🎟️ {t("home.quickQueue")}</Link>
-            <Link className="btn btn-block" href="/patient/medicines" style={{ justifyContent: "flex-start" }}>💊 {t("home.quickMedicines")}</Link>
-            <Link className="btn btn-block" href="/doctors" style={{ justifyContent: "flex-start" }}>👩‍⚕️ {t("home.findDoctor")}</Link>
-            <div className="emergency-strip">
-              <span aria-hidden>🚑</span>
-              <div>
-                <div className="small">{t("home.emergencyText")}</div>
-                <strong>911 · 103</strong>
-              </div>
+          <div className="hero-media">
+            <ImageSlot
+              src="/images/hero-doctors.jpg"
+              alt={t("home.heroImageAlt")}
+              hint="Բժիշկների / բուժանձնակազմի լուսանկար"
+              size="1200×900"
+              ratio="4 / 3"
+            />
+            <div className="hero-badge">
+              <span className="hero-badge-icon"><Icon name="shieldCheck" size={22} /></span>
+              <span>{t("home.heroBadge")}</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Quick actions */}
+      <section className="quick-bar" aria-label={t("home.quickTitle")}>
+        <div className="container quick-grid">
+          <Link className="quick-item" href="/queue">
+            <span className="quick-icon"><Icon name="ticket" size={22} /></span>
+            <span>{t("home.quickQueue")}</span>
+            <Icon name="arrowRight" size={18} className="quick-arrow" />
+          </Link>
+          <Link className="quick-item" href="/patient/medicines">
+            <span className="quick-icon green"><Icon name="pill" size={22} /></span>
+            <span>{t("home.quickMedicines")}</span>
+            <Icon name="arrowRight" size={18} className="quick-arrow" />
+          </Link>
+          <Link className="quick-item" href="/doctors">
+            <span className="quick-icon"><Icon name="stethoscope" size={22} /></span>
+            <span>{t("home.findDoctor")}</span>
+            <Icon name="arrowRight" size={18} className="quick-arrow" />
+          </Link>
+          <a className="quick-item emergency" href="tel:103">
+            <span className="quick-icon"><Icon name="ambulance" size={22} /></span>
+            <span>
+              <span className="xs">{t("home.emergency")}</span>
+              <strong>911 · 103</strong>
+            </span>
+          </a>
         </div>
       </section>
 
       {/* Stats */}
       <section className="section-sm">
         <div className="container stats">
-          <div className="stat"><div className="stat-icon">🏥</div><div className="stat-value">25+</div><div className="stat-label">{t("home.statsYears")}</div></div>
-          <div className="stat"><div className="stat-icon">👩‍⚕️</div><div className="stat-value">{stats.doctors}</div><div className="stat-label">{t("home.statsDoctors")}</div></div>
-          <div className="stat"><div className="stat-icon">❤️</div><div className="stat-value">{Math.max(stats.patients, 1) * 1000}+</div><div className="stat-label">{t("home.statsPatients")}</div></div>
-          <div className="stat"><div className="stat-icon">🧬</div><div className="stat-value">{stats.departments}</div><div className="stat-label">{t("home.statsDepartments")}</div></div>
+          <div className="stat"><div className="stat-icon"><Icon name="hospital" size={22} /></div><div><div className="stat-value">25+</div><div className="stat-label">{t("home.statsYears")}</div></div></div>
+          <div className="stat"><div className="stat-icon"><Icon name="stethoscope" size={22} /></div><div><div className="stat-value">{stats.doctors}</div><div className="stat-label">{t("home.statsDoctors")}</div></div></div>
+          <div className="stat"><div className="stat-icon green"><Icon name="heartPulse" size={22} /></div><div><div className="stat-value">{Math.max(stats.patients, 1) * 1000}+</div><div className="stat-label">{t("home.statsPatients")}</div></div></div>
+          <div className="stat"><div className="stat-icon green"><Icon name="microscope" size={22} /></div><div><div className="stat-value">{stats.departments}</div><div className="stat-label">{t("home.statsDepartments")}</div></div></div>
         </div>
       </section>
 
       {/* Why us */}
       <section className="section">
-        <div className="container">
-          <h2 className="mb-3">{t("home.whyTitle")}</h2>
-          <div className="grid grid-4">
-            {[["📅", 1], ["🩻", 2], ["💊", 3], ["🗂️", 4]].map(([icon, n]) => (
-              <div key={n} className="card feature">
-                <div className="feature-icon" aria-hidden>{icon}</div>
-                <div>
-                  <h3 style={{ fontSize: "1rem" }}>{t(`home.why${n}t`)}</h3>
-                  <p className="small mt-1">{t(`home.why${n}`)}</p>
+        <div className="container about-grid">
+          <ImageSlot
+            src="/images/about-clinic.jpg"
+            alt={t("home.aboutImageAlt")}
+            hint="Կլինիկայի ինտերիեր / ընդունարան"
+            size="1000×1100"
+            ratio="10 / 11"
+            className="about-media"
+          />
+          <div>
+            <span className="eyebrow">{t("brand.name")}</span>
+            <h2>{t("home.whyTitle")}</h2>
+            <p className="mt-1">{t("home.whySub")}</p>
+            <div className="grid grid-2 mt-3">
+              {(["calendar", "scan", "pill", "folder"] as const).map((icon, i) => (
+                <div key={icon} className="feature">
+                  <div className="feature-icon"><Icon name={icon} size={22} /></div>
+                  <div>
+                    <h3 style={{ fontSize: "1rem" }}>{t(`home.why${i + 1}t`)}</h3>
+                    <p className="small mt-1">{t(`home.why${i + 1}`)}</p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Services */}
-      <section className="section" style={{ paddingTop: 0 }}>
+      <section className="section section-tint">
         <div className="container">
           <div className="section-head">
             <div><h2>{t("home.servicesTitle")}</h2><p>{t("home.servicesSub")}</p></div>
@@ -89,7 +131,7 @@ export default async function HomePage() {
       </section>
 
       {/* Doctors */}
-      <section className="section" style={{ background: "var(--surface)", borderBlock: "1px solid var(--border)" }}>
+      <section className="section">
         <div className="container">
           <div className="section-head">
             <div><h2>{t("home.doctorsTitle")}</h2><p>{t("home.doctorsSub")}</p></div>
@@ -103,7 +145,7 @@ export default async function HomePage() {
 
       {/* Equipment */}
       {equipment.length > 0 && (
-        <section className="section">
+        <section className="section section-tint">
           <div className="container">
             <div className="section-head">
               <div><h2>{t("home.equipmentTitle")}</h2><p>{t("home.equipmentSub")}</p></div>
@@ -114,7 +156,7 @@ export default async function HomePage() {
                 <article key={e.id} className="card equip-card card-hover">
                   <div className="equip-media">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    {e.imageUrl ? <img src={e.imageUrl} alt={e.name} /> : <span aria-hidden>🩻</span>}
+                    {e.imageUrl ? <img src={e.imageUrl} alt={e.name} /> : <Icon name="scan" size={44} className="equip-ph" />}
                     {e.isNew && <span className="badge badge-new">{t("equipment.new")}</span>}
                   </div>
                   <div className="equip-body">
@@ -130,7 +172,7 @@ export default async function HomePage() {
 
       {/* Articles */}
       {articles.items.length > 0 && (
-        <section className="section" style={{ paddingTop: 0 }}>
+        <section className="section">
           <div className="container">
             <div className="section-head">
               <div><h2>{t("home.articlesTitle")}</h2><p>{t("home.articlesSub")}</p></div>
@@ -156,10 +198,10 @@ export default async function HomePage() {
           <div className="card stack">
             <h2>{t("home.contactsTitle")}</h2>
             <dl className="kv">
-              <dt>📍 {t("home.address")}</dt><dd>{address}</dd>
-              <dt>📞 {t("home.phone")}</dt><dd><a href="tel:+37410000000">+374 10 00 00 00</a></dd>
-              <dt>🕒 {t("home.hours")}</dt><dd>{t("home.hoursValue")}</dd>
-              <dt>🚑 {t("home.emergency")}</dt><dd>{t("home.hoursEmergency")} · 911 / 103</dd>
+              <dt className="with-icon"><Icon name="mapPin" size={16} /> {t("home.address")}</dt><dd>{address}</dd>
+              <dt className="with-icon"><Icon name="phone" size={16} /> {t("home.phone")}</dt><dd><a href="tel:+37410000000">+374 10 00 00 00</a></dd>
+              <dt className="with-icon"><Icon name="clock" size={16} /> {t("home.hours")}</dt><dd>{t("home.hoursValue")}</dd>
+              <dt className="with-icon"><Icon name="ambulance" size={16} /> {t("home.emergency")}</dt><dd>{t("home.hoursEmergency")} · 911 / 103</dd>
             </dl>
             <Link className="btn btn-primary" href="/book" style={{ alignSelf: "flex-start" }}>{t("home.bookCta")}</Link>
           </div>
