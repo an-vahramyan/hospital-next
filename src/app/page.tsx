@@ -35,7 +35,7 @@ export default async function HomePage() {
           </div>
           <div className="hero-media">
             <ImageSlot
-              src="/images/hero-doctors.jpg"
+              src="/images/hero-doctors.svg"
               alt={t("home.heroImageAlt")}
               hint="Բժիշկների / բուժանձնակազմի լուսանկար"
               size="1200×900"
@@ -91,7 +91,7 @@ export default async function HomePage() {
       <section className="section">
         <div className="container about-grid">
           <ImageSlot
-            src="/images/about-clinic.jpg"
+            src="/images/about-clinic.svg"
             alt={t("home.aboutImageAlt")}
             hint="Կլինիկայի ինտերիեր / ընդունարան"
             size="1000×1100"
