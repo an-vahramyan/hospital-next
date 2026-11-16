@@ -60,6 +60,15 @@ async function main() {
     { email: "gor.harutyunyan@hospital.am", firstName: "Գոռ", lastName: "Հարությունյան", dep: "therapy", specialty: "Թերապևտ", exp: 7, bio: "Ընդհանուր պրակտիկայի բժիշկ, կանխարգելիչ զննումներ։", start: "10:00", end: "18:00" },
     { email: "nare.mkrtchyan@hospital.am", firstName: "Նարե", lastName: "Մկրտչյան", dep: "radiology", specialty: "Ռադիոլոգ", exp: 10, bio: "ՄՌՏ և ԿՏ պատկերների մեկնաբանում, ուլտրաձայնային ախտորոշում։", slot: 20 },
   ];
+  const DOCTOR_PHOTOS: Record<string, string> = {
+    "doctor@hospital.am": "/images/doctors/ani-sargsyan.jpg",
+    "aram.petrosyan@hospital.am": "/images/doctors/aram-petrosyan.jpg",
+    "lilit.hakobyan@hospital.am": "/images/doctors/lilit-hakobyan.jpg",
+    "davit.grigoryan@hospital.am": "/images/doctors/davit-grigoryan.jpg",
+    "mariam.avetisyan@hospital.am": "/images/doctors/mariam-avetisyan.jpg",
+    "gor.harutyunyan@hospital.am": "/images/doctors/gor-harutyunyan.jpg",
+    "nare.mkrtchyan@hospital.am": "/images/doctors/nare-mkrtchyan.jpg",
+  };
   const doctors = [];
   for (const d of doctorsData) {
     const u = await prisma.user.create({
@@ -75,6 +84,7 @@ async function main() {
             departmentId: dep[d.dep].id,
             specialty: d.specialty,
             bio: d.bio,
+            photoUrl: DOCTOR_PHOTOS[d.email] ?? null,
             experienceYears: d.exp,
             workStart: d.start ?? "09:00",
             workEnd: d.end ?? "17:00",
@@ -111,6 +121,14 @@ async function main() {
   }
 
   // 6. tools
+  const EQUIP_IMAGES: Record<string, string> = {
+    "Siemens MAGNETOM Vida 3T ՄՌՏ": "/images/equipment/mri.jpg",
+    "GE Revolution CT": "/images/equipment/ct.jpg",
+    "Philips EPIQ Elite": "/images/equipment/ultrasound.jpg",
+    "Digital X-ray Carestream DRX": "/images/equipment/xray.jpg",
+    "Holter ECG Schiller": "/images/equipment/ecg.jpg",
+    "Հին ռենտգեն սարք": "/images/equipment/old-xray.jpg",
+  };
   await prisma.equipment.createMany({
     data: [
       { name: "Siemens MAGNETOM Vida 3T ՄՌՏ", description: "Բարձր լուծաչափով մագնիսառեզոնանսային տոմոգրաֆ՝ արագ և հարմարավետ հետազոտության համար", isNew: true, acquiredAt: daysFromNow(-40) },
@@ -119,7 +137,7 @@ async function main() {
       { name: "Digital X-ray Carestream DRX", description: "Թվային ռենտգեն ակնթարթային պատկերով", isNew: false, acquiredAt: daysFromNow(-800) },
       { name: "Holter ECG Schiller", description: "24-ժամյա ԷՍԳ մոնիտորինգ", isNew: false, acquiredAt: daysFromNow(-600) },
       { name: "Հին ռենտգեն սարք", description: "Դուրս է գրված", isNew: false, status: "RETIRED", acquiredAt: daysFromNow(-4000) },
-    ],
+    ].map((e) => ({ ...e, imageUrl: EQUIP_IMAGES[e.name] ?? null })),
   });
 
   // 7.test pacient + history
@@ -203,6 +221,15 @@ async function main() {
   });
 
   // 8. articles (hy, en, ru)
+  const ARTICLE_COVERS: Record<string, string> = {
+    "arterial-pressure-hy": "/images/articles/blood-pressure.jpg",
+    "blood-pressure-en": "/images/articles/blood-pressure.jpg",
+    "davlenie-ru": "/images/articles/blood-pressure.jpg",
+    "child-fever-hy": "/images/articles/child-fever.jpg",
+    "temperatura-u-rebenka-ru": "/images/articles/child-fever.jpg",
+    "mri-what-to-know-hy": "/images/articles/mri.jpg",
+    "mri-guide-en": "/images/articles/mri.jpg",
+  };
   await prisma.article.createMany({
     data: [
       {
@@ -244,7 +271,7 @@ async function main() {
         slug: "draft-article", language: "hy", isPublished: false,
         title: "Սևագիր հոդված", content: "Այս հոդվածը դեռ հրապարակված չէ։",
       },
-    ],
+    ].map((a) => ({ ...a, coverUrl: ARTICLE_COVERS[a.slug] ?? null })),
   });
 
   console.log("✅ Seed completed");
